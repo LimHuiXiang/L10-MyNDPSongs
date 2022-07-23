@@ -17,46 +17,45 @@ import java.util.ArrayList;
 
 public class Show_Activity extends AppCompatActivity {
     Button btnFilter;
-    ArrayList<Song> alSongs;
+    ArrayList<Song> ALSongs;
     Spinner spinner;
     ListView lv;
-    CustomAdapter aaSongs;
-    ArrayAdapter<String> aaYear;
-    ArrayList<String> alYear;
-    DBHelper db = new DBHelper(Show_Activity.this);
+    CustomAdapter AASongs;
+    ArrayAdapter<String> AAYear;
+    ArrayList<String> ALYear;
+    DBHelper dbh = new DBHelper(Show_Activity.this);
     boolean CHECKED = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show);
-
+        //Linking the UI to the variable
         lv = findViewById(R.id.ListViewSong);
         btnFilter = findViewById(R.id.buttonShow);
 
         spinner = findViewById(R.id.spinner);
-        alYear = new ArrayList<String>();
+        ALYear = new ArrayList<String>();
 
-        aaYear = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, alYear);
+        AAYear = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ALYear);
         load();
-        spinner.setAdapter(aaYear);
+        spinner.setAdapter(AAYear);
         spinner.setSelected(false);
 
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (!CHECKED) {
-                    alSongs.clear();
-                    alSongs.addAll(db.get5Stars());
+                    ALSongs.clear();
+                    ALSongs.addAll(dbh.get5Stars());
                     btnFilter.setText("SHOW ALL SONGS");
-                    aaSongs.notifyDataSetChanged();
+                    AASongs.notifyDataSetChanged();
                     CHECKED = true;
                 } else {
-                    alSongs.clear();
-                    alSongs.addAll(db.getAllSongs());
+                    ALSongs.clear();
+                    ALSongs.addAll(dbh.getAllSongs());
+                    AASongs.notifyDataSetChanged();
                     CHECKED = false;
-                    aaSongs.notifyDataSetChanged();
                     btnFilter.setText("SHOW ALL SONGS WITH 5 STARS");
 
                 }
@@ -67,13 +66,13 @@ public class Show_Activity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                alSongs.clear();
-                Log.d("info", alYear.get(i) + "");
-                Toast.makeText(Show_Activity.this, alYear.get(i),
+                ALSongs.clear();
+                Log.d("info", ALYear.get(i) + "");
+                Toast.makeText(Show_Activity.this, ALYear.get(i),
                         Toast.LENGTH_SHORT).show();
-                if (!alYear.get(i).equalsIgnoreCase("NONE")) {
-                    alSongs.addAll(db.getSongsByYear(Integer.parseInt(alYear.get(i))));
-                    aaSongs.notifyDataSetChanged();
+                if (!ALYear.get(i).equalsIgnoreCase("NONE")) {
+                    ALSongs.addAll(dbh.getSongsByYear(Integer.parseInt(ALYear.get(i))));
+                    AASongs.notifyDataSetChanged();
                 }
 
             }
@@ -81,7 +80,7 @@ public class Show_Activity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 Toast.makeText(Show_Activity.this, "Please  select something",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -89,10 +88,10 @@ public class Show_Activity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int
                     position, long identity) {
-                Song selected = alSongs.get(position);
+                Song Data = ALSongs.get(position);
                 Intent i = new Intent(Show_Activity.this,
                         Edit_Delete.class);
-                i.putExtra("Selected", selected);
+                i.putExtra("Selected", Data);
                 startActivity(i);
             }
         });
@@ -100,17 +99,17 @@ public class Show_Activity extends AppCompatActivity {
     }
 
     private void load() {
-        alSongs = db.getAllSongs();
-        aaSongs = new CustomAdapter(this,
-                R.layout.row, alSongs);
-        lv.setAdapter(aaSongs);
+        ALSongs = dbh.getAllSongs();
+        AASongs = new CustomAdapter(this,
+                R.layout.row, ALSongs);
+        lv.setAdapter(AASongs);
         loadSpinner();
     }
 
     private void loadSpinner() {
-        alYear.clear();
-        alYear.addAll(db.getYear());
-        Toast.makeText(Show_Activity.this, alYear.get(0) + "",
+        ALYear.clear();
+        ALYear.addAll(dbh.getYear());
+        Toast.makeText(Show_Activity.this, ALYear.get(0) + "",
                 Toast.LENGTH_SHORT).show();
     }
 

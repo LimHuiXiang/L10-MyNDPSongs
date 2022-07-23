@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BtnInsert=findViewById(R.id.buttonInsert);
-        BtnShow=findViewById(R.id.buttonShow);
+        BtnInsert=findViewById(R.id.ButtonInsert);
+        BtnShow=findViewById(R.id.ButtonShow);
         ETSingers=findViewById(R.id.editTextSingers);
         ETTitle=findViewById(R.id.editTextSong);
         ETYear=findViewById(R.id.editTextYear);
@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Insert successful",
                             Toast.LENGTH_SHORT).show();
                 }
+
+                ETTitle.setText("");
+                ETSingers.setText("");
+                ETYear.setText("");
+                rgStars.clearCheck();
 
             }
         });

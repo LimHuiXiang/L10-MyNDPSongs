@@ -105,13 +105,13 @@
 
 
     <Button
-        android:id="@+id/buttonInsert"
+        android:id="@+id/ButtonInsert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/insert" />
 
     <Button
-        android:id="@+id/buttonList"
+        android:id="@+id/ButtonShow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/showlist" />
